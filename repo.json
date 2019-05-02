@@ -1,0 +1,16 @@
+[
+	{
+		"Name": "mcompiler",
+		"Description": "simple plugin to compile code using the micro text edit",
+		"Tags": ["mcompiler"],
+		"Versions": [
+			{
+				"Version": "1.0.0",
+				"Url": "https://github.com/onodera-punpun/micro-fish-plugin/archive/0.1.1.zip",
+				"Require": {
+					"micro": ">=1.1.2"
+				}
+			}
+		]
+	}
+]
