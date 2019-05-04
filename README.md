@@ -5,7 +5,7 @@
 \/    \/\___\___/|_| |_| |_| .__/|_|_|\___|_|
                            |_|                  
 
-Simple plugin to compile code using the micro text editor
+Simple plugin to compile code using micro text editor
 
 1.- INSTALL
 in micro open command mode (ctrl+e) and type:

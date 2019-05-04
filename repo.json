@@ -1,7 +1,7 @@
 [
 	{
 		"Name": "mcompiler",
-		"Description": "simple plugin to compile code using the micro text edit",
+		"Description": "Simple plugin to compile code using micro text editor",
 		"Tags": ["mcompiler"],
 		"Versions": [
 			{
