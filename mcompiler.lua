@@ -19,9 +19,9 @@ function runcCommand()
     local file = CurView().Buf.Path       -- get file name
     local dir = DirectoryName(file)       -- get directory of file
     -- change this
-    local runn = "go run ".. file         -- compiler/interprter params, change this for custom params 
+    local runn = "go run ".. file         -- compiler/interpreter params, change this for custom params 
     os.execute(runn)                      -- ejecute 
-    --os.execute("tmux run-shell -t 2 '" .. runn .. "' " ) -- temux pane (pane 2) output use in t-ide
+    --os.execute("tmux run-shell -t 2 '" .. runn .. "' " ) -- temux pane (pane 2) output use in temux based ide see (https://github.com/Odyssey2247/t-ide)
 end
 
 --function to compile code
@@ -31,7 +31,7 @@ function buildCommand()
     local file = CurView().Buf.Path       -- get file name
     local dir = DirectoryName(file)       -- get directory of file
     -- change this
-    local runn = "go build ".. file         -- compiler/interprter params, change this for custom params  
+    local runn = "go build ".. file         -- compiler/interpreter params, change this for custom params  
     os.execute(runn)                      -- ejecute 
-    --os.execute("tmux run-shell -t 2 '" .. runn .. "' " ) -- temux pane (pane 2) output use in t-ide
+    --os.execute("tmux run-shell -t 2 '" .. runn .. "' " ) -- temux pane (pane 2) output use in temux based ide see (https://github.com/Odyssey2247/t-ide)
 end

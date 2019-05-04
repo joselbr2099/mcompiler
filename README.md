@@ -6,15 +6,27 @@
                                |_|                  
     https://github.com/Odyssey2247/mcompiler
 
-Simple plugin to compile code using micro text editor V 1.0.1
+# Simple plugin to compile code using micro text editor V 1.0.1
 
-1.- INSTALL
+### NOTE
+
+this plugin is made for Temux based IDE (t-ide) https://github.com/Odyssey2247/t-ide
+but can be using without t-ide with the correct settings
+
+### INSTALL
 
 in micro open command mode (ctrl+e) and:
 
 	plugins install mcompiler
 
-2.- USE
+### MANUAL INSTALL
+
+in terminal
+
+    $ git clone https://github.com/Odyssey2247/mcompiler
+    $ mv mcompiler ~/.config/micro/plugins
+
+### USE
 
 to RUN your code(ruby, python...) open command mode and:
 
@@ -24,7 +36,7 @@ to build/compile your code:
 	
 	build
 
-3.- KEYBINDINGS
+### KEYBINDINGS
 
 to use a key instead of a command (like F5 to build) go to the directory:
 	
@@ -40,7 +52,7 @@ and create the file "bindings.json" with the following content
 and save.
 in micro simple, press F5 to build your code or F6 to run
 
-4.- CONFIG
+### CONFIG
 
 open file:
 
