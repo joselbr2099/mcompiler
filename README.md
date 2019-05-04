@@ -1,9 +1,13 @@
+<<<<<<< HEAD
                                   _ _           
   /\/\   ___ ___  _ __ ___  _ __ (_) | ___ _ __ 
  /    \ / __/ _ \| '_ ` _ \| '_ \| | |/ _ \ '__|
 / /\/\ \ (_| (_) | | | | | | |_) | | |  __/ |
 \/    \/\___\___/|_| |_| |_| .__/|_|_|\___|_|
                            |_|                  
+=======
+simple plugin to compile code using the micro text editor
+>>>>>>> 2aed3906ce2e89b89f9f846c7c0db7078c6dc127
 
 Simple plugin to compile code using micro text editor
 
