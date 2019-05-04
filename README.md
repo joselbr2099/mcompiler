@@ -10,7 +10,7 @@
 
 ### NOTE
 
-this plugin is made for Temux based IDE (t-ide) https://github.com/Odyssey2247/t-ide
+this plugin is made for Tmux based IDE (t-ide) https://github.com/Odyssey2247/t-ide
 but can be using without t-ide with the correct settings
 
 ### INSTALL
