@@ -10,17 +10,17 @@ Simple plugin to compile code using micro text editor V 1.0.1
 
 1.- INSTALL
 
-in micro open command mode (ctrl+e) and type:
+in micro open command mode (ctrl+e) and:
 
 	plugins install mcompiler
 
 2.- USE
 
-to RUN your code(ruby, python...) open command mode an type:
+to RUN your code(ruby, python...) open command mode and:
 
 	runc
 
-to build/compile your code type
+to build/compile your code:
 	
 	build
 
