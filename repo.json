@@ -5,8 +5,8 @@
 		"Tags": ["mcompiler"],
 		"Versions": [
 			{
-				"Version": "1.0.0",
-				"Url": "https://github.com/onodera-punpun/micro-fish-plugin/archive/0.1.1.zip",
+				"Version": "1.0.1",
+				"Url": "https://github.com/Odyssey2247/mcompiler/archive/1.0.1.zip",
 				"Require": {
 					"micro": ">=1.1.2"
 				}
