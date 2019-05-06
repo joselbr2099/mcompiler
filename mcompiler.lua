@@ -77,7 +77,7 @@ function print_term(cmd,type)
    local f = io.popen(cmd.." "..file..' 2>&1 && echo " $?"')  --execute cmd
    if(tide=="yes")
    then
-	   os.execute("tmux send-keys -t 2 'Escape'")
+	   os.execute("tmux send-keys -t 2 'Escape'") 
 	   os.execute("tmux run-shell -t 2 'echo ------------------Init-" .. type .. "------------------' ")
 	   os.execute("tmux run-shell -t 2 'echo COMMAND_USE: "..cmd.." "..file.."'")	   
 	    for line in f:lines() do
@@ -96,5 +96,5 @@ function print_term(cmd,type)
 	        end
    end	          
    f:close()
-   --os.execute("tmux send-keys -t 2 'PageDown'")   
+   --os.execute("tmux send-keys -t 2 'PageDown'")   -- uncomment this if 'Escape' not work
 end
