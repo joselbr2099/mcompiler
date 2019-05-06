@@ -12,7 +12,6 @@ VERSION = "1.0.1"
 
   runn = "go run"         -- compiler/interpreter params, change this for custom param
 
-
 --[[
 
     "comp" this variable is responsible for the flags or compilation arguments
@@ -29,12 +28,14 @@ VERSION = "1.0.1"
 ]]--
 
   bug =""
+
 --[[
 
     "tide": "yes" if yo use Tmux based Ide (https://github.com/Odyssey2247/t-ide) 
             "no" for execution/compilation in background (no tide) use only micro
             default "no" 	
 ]]--
+
   tide="no"
 
 --[[-END CONFIG VARS-----------------------------------------------------------------]]--
