@@ -36,6 +36,10 @@ to build/compile your code:
 	
 	build
 
+to debug your code:
+	
+	debug
+
 ### KEYBINDINGS
 
 to use a key instead of a command (like F5 to build) go to the directory:
@@ -58,5 +62,5 @@ open file:
 
 	~/.config/micro/plugins/mcompiler/mcompiler.lua
 
-to config "runc" and "buld" command to adjust your preferred language and 
+to config "runc" and "build" command to adjust your preferred language and 
 build/compile/run options or add more commands
