@@ -42,19 +42,10 @@ to debug your code:
 
 ### KEYBINDINGS
 
-to use a key instead of a command (like F5 to build) go to the directory:
-	
-	cd ~/.config/micro
+to use a key instead of a command:
 
-and create the file "bindings.json" with the following content
-	
-        {
-          "F5": "command:build",
-          "F6": "command:runc"
-        }
-
-and save.
-in micro simple, press F5 to build your code or F6 to run
+          "F5" command to build your code
+          "F6" command to run your code
 
 ### CONFIG
 

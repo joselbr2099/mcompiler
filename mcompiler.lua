@@ -55,6 +55,10 @@ MakeCommand("runc", "mcompiler.run_command", 0)
 MakeCommand("build", "mcompiler.build_command", 0)
 MakeCommand("debug", "mcompiler.debug_command", 0)
 
+BindKey("F5", "mcompiler.run_command")
+BindKey("F6", "mcompiler.build_command")
+--BindKey("F5", "go.gorename")
+
 --function to run code
 function run_command()
     print_term(runn,"run")
@@ -76,7 +80,7 @@ function print_term(cmd,type)
    local file = CurView().Buf.Path       -- get file name
    local dir = DirectoryName(file)       -- get directory of file
    local f = io.popen("cd "..dir.." && ".. cmd.." "..file..' 2>&1 && echo " $?"')  --execute cmd
-   os.execute("tmux send-keys -t 2 'cd "..dir.."' Enter")
+   --os.execute("tmux send-keys -t 2 'cd "..dir.."' Enter")
    if(tide=="yes")
    then
 	   os.execute("tmux send-keys -t 2 'Escape'")
