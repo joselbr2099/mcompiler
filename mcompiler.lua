@@ -10,7 +10,8 @@ VERSION = "1.0.1"
     runn = "python"	
 ]]--
 
-  runn = "go run"         -- compiler/interpreter params, change this for custom param
+  runn = "python"         -- compiler/interpreter params, change this for custom param
+
 
 --[[
 
@@ -28,15 +29,13 @@ VERSION = "1.0.1"
 ]]--
 
   bug =""
-
 --[[
 
     "tide": "yes" if yo use Tmux based Ide (https://github.com/Odyssey2247/t-ide) 
             "no" for execution/compilation in background (no tide) use only micro
             default "no" 	
 ]]--
-
-  tide="no"
+  tide="yes"
 
 --[[-END CONFIG VARS-----------------------------------------------------------------]]--
 if GetOption("runc") == nil then
@@ -78,11 +77,17 @@ function print_term(cmd,type)
    local f = io.popen(cmd.." "..file..' 2>&1 && echo " $?"')  --execute cmd
    if(tide=="yes")
    then
-	   os.execute("tmux send-keys -t 2 'Escape'") 
+	   os.execute("tmux send-keys -t 2 'Escape'")
 	   os.execute("tmux run-shell -t 2 'echo ------------------Init-" .. type .. "------------------' ")
 	   os.execute("tmux run-shell -t 2 'echo COMMAND_USE: "..cmd.." "..file.."'")	   
-	    for line in f:lines() do
-	      os.execute("tmux run-shell -t 2 'echo " .. line .. "' ")  --print in tmux pane 2
+	    for line in f:lines() do	    
+	      if line == " 0"
+	      then
+             os.execute("tmux run-shell -t 2 'echo ALL_OK_NO_ERRORS' ")
+             os.execute("tmux run-shell -t 2 'echo EXEC_CODE: " .. line .. "' ")
+          else
+             os.execute("tmux run-shell -t 2 'echo " .. line .. "' ")  --print in tmux pane 2
+	      end
 	    end
 	   os.execute("tmux run-shell -t 2 'echo ------------------Finish-" .. type .. "----------------' ")
    else
@@ -97,5 +102,5 @@ function print_term(cmd,type)
 	        end
    end	          
    f:close()
-   --os.execute("tmux send-keys -t 2 'PageDown'")   -- uncomment this if 'Escape' not work
+   --os.execute("tmux send-keys -t 2 'PageDown'")   
 end
