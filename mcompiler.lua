@@ -12,7 +12,6 @@ VERSION = "1.0.1"
 
   runn = "python"         -- compiler/interpreter params, change this for custom param
 
-
 --[[
 
     "comp" this variable is responsible for the flags or compilation arguments
@@ -29,12 +28,14 @@ VERSION = "1.0.1"
 ]]--
 
   bug =""
+
 --[[
 
     "tide": "yes" if yo use Tmux based Ide (https://github.com/Odyssey2247/t-ide) 
             "no" for execution/compilation in background (no tide) use only micro
             default "no" 	
 ]]--
+
   tide="yes"
 
 --[[-END CONFIG VARS-----------------------------------------------------------------]]--
@@ -83,10 +84,10 @@ function print_term(cmd,type)
 	    for line in f:lines() do	    
 	      if line == " 0"
 	      then
-             os.execute("tmux run-shell -t 2 'echo ALL_OK_NO_ERRORS' ")
-             os.execute("tmux run-shell -t 2 'echo EXEC_CODE: " .. line .. "' ")
-          else
-             os.execute("tmux run-shell -t 2 'echo " .. line .. "' ")  --print in tmux pane 2
+                 os.execute("tmux run-shell -t 2 'echo ALL_OK_NO_ERRORS' ")
+                 os.execute("tmux run-shell -t 2 'echo EXEC_CODE: " .. line .. "' ")
+              else
+                 os.execute("tmux run-shell -t 2 'echo " .. line .. "' ")  --print in tmux pane 2
 	      end
 	    end
 	   os.execute("tmux run-shell -t 2 'echo ------------------Finish-" .. type .. "----------------' ")
