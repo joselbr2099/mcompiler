@@ -10,7 +10,7 @@ VERSION = "1.0.1"
     runn = "python"	
 ]]--
 
-  runn = "python"         -- compiler/interpreter params, change this for custom param
+  runn = "go run"         -- compiler/interpreter params, change this for custom param
 
 --[[
 
@@ -75,7 +75,8 @@ function print_term(cmd,type)
    local ft = CurView().Buf:FileType()   -- get file extension  
    local file = CurView().Buf.Path       -- get file name
    local dir = DirectoryName(file)       -- get directory of file
-   local f = io.popen(cmd.." "..file..' 2>&1 && echo " $?"')  --execute cmd
+   local f = io.popen("cd "..dir.." && ".. cmd.." "..file..' 2>&1 && echo " $?"')  --execute cmd
+   os.execute("tmux send-keys -t 2 'cd "..dir.."' Enter")
    if(tide=="yes")
    then
 	   os.execute("tmux send-keys -t 2 'Escape'")
@@ -84,10 +85,10 @@ function print_term(cmd,type)
 	    for line in f:lines() do	    
 	      if line == " 0"
 	      then
-                 os.execute("tmux run-shell -t 2 'echo ALL_OK_NO_ERRORS' ")
-                 os.execute("tmux run-shell -t 2 'echo EXEC_CODE: " .. line .. "' ")
-              else
-                 os.execute("tmux run-shell -t 2 'echo " .. line .. "' ")  --print in tmux pane 2
+             os.execute("tmux run-shell -t 2 'echo && echo ALL_OK_NO_ERRORS' ")
+             os.execute("tmux run-shell -t 2 'echo EXEC_CODE: " .. line .. "' ")  --print in tmux pane 2
+          else
+             os.execute("tmux run-shell -t 2 'echo && echo " .. line .. "' ")  --print in tmux pane 2
 	      end
 	    end
 	   os.execute("tmux run-shell -t 2 'echo ------------------Finish-" .. type .. "----------------' ")
