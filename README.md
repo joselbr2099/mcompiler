@@ -15,7 +15,7 @@ but can be using without t-ide with the correct settings
 
 ### INSTALL
 
-in micro open command mode (ctrl+e) and:
+in micro open command mode (remember this: ctrl+e ) and:
 
 	plugins install mcompiler
 
@@ -27,18 +27,36 @@ in terminal
     $ mv mcompiler ~/.config/micro/plugins
 
 ### USE
-
+has 3 commands to use mcompiler:
 to RUN your code(ruby, python...) open command mode and:
 
-	runc
+	>runc
 
 to build/compile your code:
 	
-	build
+	>build
 
 to debug your code:
 	
-	debug
+	>debug
+
+To configure these variables with your favorite language ruby example
+open a terminal and: 
+
+	>set runc ruby
+
+to set "build" command, example go:
+
+	>set build "go build -gcflags=-e"
+
+remember that when using the prefix "set" the values passed to the commands
+runc / build / debug will be local only for the current micro instance
+to show current value of commad:
+
+	>show build
+
+Finally, to run/build/debug your code, you can use the micro command 
+mode and use one of the 3 commands described above:
 
 ### KEYBINDINGS
 
@@ -53,5 +71,5 @@ open file:
 
 	~/.config/micro/plugins/mcompiler/mcompiler.lua
 
-to config "runc" and "build" command to adjust your preferred language and 
-build/compile/run options or add more commands
+to configure the commands "runc", "build" and "debug" in a global way for 
+all the micro instances

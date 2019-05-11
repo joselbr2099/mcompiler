@@ -10,7 +10,7 @@ VERSION = "1.0.1"
     runn = "python"	
 ]]--
 
-  runn = "go run"         -- compiler/interpreter params, change this for custom param
+  runn = ""         -- compiler/interpreter params, change this for custom param
 
 --[[
 
@@ -19,7 +19,7 @@ VERSION = "1.0.1"
     comp = "go build -gcflags=-e"
 ]]--
 
-  comp = "go build -gcflags=-e"  -- compiler/interpreter params, change this for custom param
+  comp = ""  -- compiler/interpreter params, change this for custom param
 
 --[[
     "bug" use this variable for your favorite debugger
@@ -36,20 +36,19 @@ VERSION = "1.0.1"
             default "no" 	
 ]]--
 
-  tide="yes"
+  tide="no"
 
 --[[-END CONFIG VARS-----------------------------------------------------------------]]--
-if GetOption("runc") == nil then
-    AddOption("runc", true)
-end
+--[[-CONFIG OPTIONS------------------------------------------------------------------]]--
+-- add custom options for commands:
 
-if GetOption("build") == nil then
-    AddOption("build", true)
-end
+AddOption("runc", runn)
 
-if GetOption("debug") == nil then
-    AddOption("debug", true)
-end
+AddOption("build", comp)
+
+AddOption("debug", bug)
+
+--[[-CONFIG OPTIONS------------------------------------------------------------------]]--
 
 MakeCommand("runc", "mcompiler.run_command", 0)
 MakeCommand("build", "mcompiler.build_command", 0)
@@ -61,26 +60,39 @@ BindKey("F6", "mcompiler.build_command")
 
 --function to run code
 function run_command()
-    print_term(runn,"run")
+       command("runc")
+
 end
 
 --function to compile code
 function build_command()
-    print_term(comp,"build")
+        command("build")
+
 end
 
 --function to debug code
-function debug_command()  
-    print_term(bug,"debugger")
+function debug_command()
+        command("debug")  
+end
+
+function command(arg)
+--print("aqio--->"..GetOption(arg))
+    if GetOption(arg) == "" 
+	then
+	     RunShellCommand("clear")
+	     RunInteractiveShell(help(arg),true,true)
+	else
+	   print_term(GetOption(arg),arg)	
+    end
 end
 
 function print_term(cmd,type)
+   
    CurView():Save(false)   -- save current open file
    local ft = CurView().Buf:FileType()   -- get file extension  
    local file = CurView().Buf.Path       -- get file name
    local dir = DirectoryName(file)       -- get directory of file
-   local f = io.popen("cd "..dir.." && ".. cmd.." "..file..' 2>&1 && echo " $?"')  --execute cmd
-   --os.execute("tmux send-keys -t 2 'cd "..dir.."' Enter")
+   local f = io.popen("cd "..dir.." && "..cmd.." "..file..' 2>&1 && echo " $?"')  --execute cmd
    if(tide=="yes")
    then
 	   os.execute("tmux send-keys -t 2 'Escape'")
@@ -88,25 +100,69 @@ function print_term(cmd,type)
 	   os.execute("tmux run-shell -t 2 'echo COMMAND_USE: "..cmd.." "..file.."'")	   
 	    for line in f:lines() do	    
 	      if line == " 0"
-	      then
-             os.execute("tmux run-shell -t 2 'echo && echo ALL_OK_NO_ERRORS' ")
-             os.execute("tmux run-shell -t 2 'echo EXEC_CODE: " .. line .. "' ")  --print in tmux pane 2
-          else
-             os.execute("tmux run-shell -t 2 'echo && echo " .. line .. "' ")  --print in tmux pane 2
+	        then
+                     os.execute("tmux run-shell -t 2 'echo && echo ALL_OK_NO_ERRORS' ")
+                     os.execute("tmux run-shell -t 2 'echo EXEC_CODE: " .. line .. "' ")  --print in tmux pane 2
+                else
+                     os.execute("tmux run-shell -t 2 'echo && echo " .. line .. "' ")  --print in tmux pane 2
 	      end
 	    end
 	   os.execute("tmux run-shell -t 2 'echo ------------------Finish-" .. type .. "----------------' ")
-   else
-       local out = f:read('*all')
-       local err = RunInteractiveShell("clear",false,false)
-			if err1 ~=nil then
-				 messenger:Error(err)
-		    end
-       local err1 = RunInteractiveShell("echo "..out,true,true)
-	        if err1 ~=nil then
-	            messenger:Error(err)
-	        end
+   else 
+	RunShellCommand("clear")
+	n = os.tmpname()
+        file=io.open(n,"w")
+        file:write("\n")
+        file:write("------------------Init-" .. type .. "------------------ ","\n")
+        file:write("COMMAND_USE: " .. tostring(cmd) .. " " .. tostring(CurView().Buf.Path),"\n")
+	file:write("\n")	
+        for line in f:lines() do
+           if line == " 0"
+             then
+		file:write("\n")
+		file:write("ALL_OK_NO_ERRORS ","\n")
+		file:write("EXEC_CODE:" .. line .. " ","\n")
+             else
+		file:write(line,"\n")
+           end          
+        end
+        file:write("------------------Finish-" .. type .. "---------------- ","\n")
+	file:close()
+	RunInteractiveShell("cat "..n.."",true,true)
+        os.remove(n)     
    end	          
    f:close()
    --os.execute("tmux send-keys -t 2 'PageDown'")   
+end
+function help(cmd)
+RunInteractiveShell("clear",false,false)
+hlp="echo -e 'Mcompiler v1.0.1\n".. 
+     "https://github.com/Odyssey2247/mcompiler\n"..
+     "\n"..
+     "Error the variable -"..cmd.."- is not set\n"..
+     " Please use te following commands to set your variables:\n"..
+     " -runc,\n".. 
+     " -build,\n".. 
+     " -bug,\n"..
+     " open command mode in micro (ctrl+e) an hit:\n"..
+     "\n"..
+     " use the 'set' command to set the 'option' variable globally\n"..
+     " for all micro instances:\n"..
+     " >set <option>\n"..
+     "\n"..
+     " for current instace only\n"..
+     " >setlocal <option>\n"..    
+     " \n"..
+     " for run only (example python):\n"..
+     " >set run python\n"..
+     "\n"..
+     " to build your code with custom arguments (example go):\n"..
+     ' >set build "go build -gcflags=-e"\n'..
+     "\n"..
+     ' remember use " " for arguments that have spaces\n'..
+     " to see the current value of the variable\n"..
+     "\n"..  
+     " >show <var>\n"..
+     "\n' "
+return hlp
 end
