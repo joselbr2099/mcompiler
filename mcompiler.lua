@@ -9,8 +9,8 @@ VERSION = "1.0.1"
     runn = "go run"
     runn = "python"	
 ]]--
-
-  runn = ""         -- compiler/interpreter params, change this for custom param
+  -- compiler/interpreter params, change this for custom param
+  runc = ""
 
 --[[
 
@@ -18,8 +18,8 @@ VERSION = "1.0.1"
     examples:
     comp = "go build -gcflags=-e"
 ]]--
-
-  comp = ""  -- compiler/interpreter params, change this for custom param
+  -- compiler/interpreter params, change this for custom param
+  build = ""
 
 --[[
     "bug" use this variable for your favorite debugger
@@ -27,7 +27,7 @@ VERSION = "1.0.1"
     comp = "gdb -d $(go env GOROOT) foo"
 ]]--
 
-  bug =""
+  debug =""
 
 --[[
 
@@ -42,21 +42,21 @@ VERSION = "1.0.1"
 --[[-CONFIG OPTIONS------------------------------------------------------------------]]--
 -- add custom options for commands:
 
-AddOption("runc", runn)
-
-AddOption("build", comp)
-
-AddOption("debug", bug)
+AddOption("runc", runc)
+AddOption("build", build)
+AddOption("debug", debug)
 
 --[[-CONFIG OPTIONS------------------------------------------------------------------]]--
-
+--make commands
 MakeCommand("runc", "mcompiler.run_command", 0)
 MakeCommand("build", "mcompiler.build_command", 0)
 MakeCommand("debug", "mcompiler.debug_command", 0)
-
+MakeCommand("tree", "mcompiler.tree_command", 0)
+--bindkeys
 BindKey("F5", "mcompiler.run_command")
 BindKey("F6", "mcompiler.build_command")
---BindKey("F5", "go.gorename")
+BindKey("F8", "mcompiler.debug_command")
+BindKey("F9", "mcompiler.tree_command")
 
 --function to run code
 function run_command()
@@ -75,19 +75,33 @@ function debug_command()
         command("debug")  
 end
 
-function command(arg)
---print("aqio--->"..GetOption(arg))
-    if GetOption(arg) == "" 
-	then
-	     RunShellCommand("clear")
-	     RunInteractiveShell(help(arg),true,true)
-	else
-	   print_term(GetOption(arg),arg)	
-    end
+--function to open file manager
+function tree_command()
+        HandleCommand("tree")   
 end
 
-function print_term(cmd,type)
-   
+function command(arg)
+if tide =="yes"
+  then
+       loadConf()
+       if GetOption(arg) == "" 
+	  then
+	       help(arg)
+	  else
+	       print_term(GetOption(arg),arg)	
+       end
+  else
+       if GetOption(arg) == "" 
+          then
+	       RunShellCommand("clear")
+	       RunInteractiveShell(help(arg),true,true)
+          else
+	       print_term(GetOption(arg),arg)	
+       end
+end    
+end
+
+function print_term(cmd,type) 
    CurView():Save(false)   -- save current open file
    local ft = CurView().Buf:FileType()   -- get file extension  
    local file = CurView().Buf.Path       -- get file name
@@ -135,34 +149,54 @@ function print_term(cmd,type)
    --os.execute("tmux send-keys -t 2 'PageDown'")   
 end
 function help(cmd)
-RunInteractiveShell("clear",false,false)
-hlp="echo -e 'Mcompiler v1.0.1\n".. 
-     "https://github.com/Odyssey2247/mcompiler\n"..
-     "\n"..
-     "Error the variable -"..cmd.."- is not set\n"..
-     " Please use te following commands to set your variables:\n"..
-     " -runc,\n".. 
-     " -build,\n".. 
-     " -bug,\n"..
-     " open command mode in micro (ctrl+e) an hit:\n"..
-     "\n"..
-     " use the 'set' command to set the 'option' variable globally\n"..
-     " for all micro instances:\n"..
-     " >set <option>\n"..
-     "\n"..
-     " for current instace only\n"..
-     " >setlocal <option>\n"..    
-     " \n"..
-     " for run only (example python):\n"..
-     " >set run python\n"..
-     "\n"..
-     " to build your code with custom arguments (example go):\n"..
-     ' >set build "go build -gcflags=-e"\n'..
-     "\n"..
-     ' remember use " " for arguments that have spaces\n'..
-     " to see the current value of the variable\n"..
-     "\n"..  
-     " >show <var>\n"..
-     "\n' "
-return hlp
+if tide=="yes"
+   then
+       os.execute("tmux send-keys -t 2 'Escape'")
+       os.execute("tmux run-shell -t 2 'echo ------------------Error-" .. cmd .. "------------------' ")
+       os.execute("tmux run-shell -t 2 'echo COMMAND: "..cmd.." is empty'")
+       os.execute("tmux run-shell -t 2 'echo please config the command in -build options- window '")
+       os.execute("tmux run-shell -t 2 'echo or view README from tide'")
+       os.execute("tmux run-shell -t 2 'echo '")
+       os.execute("tmux run-shell -t 2 'echo mcompiler v1.0.1'")
+       os.execute("tmux run-shell -t 2 'echo https://github.com/Odyssey2247/mcompiler'")
+       os.execute("tmux run-shell -t 2 'echo ------------------Error-" .. cmd .. "------------------' ")		
+   else
+       RunInteractiveShell("clear",false,false)
+       hlp="echo -e 'Mcompiler v1.0.1\n".. 
+           "https://github.com/Odyssey2247/mcompiler\n"..
+           "\n"..
+           "Error the variable -"..cmd.."- is not set\n"..
+           " Please use te following commands to set your variables:\n"..
+           " -runc,\n".. 
+           " -build,\n".. 
+           " -bug,\n"..
+           " open command mode in micro (ctrl+e) an hit:\n"..
+           "\n"..
+           " use the 'set' command to set the 'option' variable globally\n"..
+           " for all micro instances:\n"..
+           " >set <option>\n"..
+           "\n"..
+           " for current instace only\n"..
+           " >setlocal <option>\n"..    
+           " \n"..
+           " for run only (example python):\n"..
+           " >set run python\n"..
+           "\n"..
+           " to build your code with custom arguments (example go):\n"..
+           ' >set build "go build -gcflags=-e"\n'..
+           "\n"..
+           ' remember use " " for arguments that have spaces\n'..
+           " to see the current value of the variable\n"..
+           "\n"..  
+           " >show <var>\n"..
+           "\n' "
+       return hlp
+end
+end
+
+function loadConf()
+  session=io.popen("tmux display-message -p '#S'")
+  profile=session:read('*l')
+  dofile(os.getenv('HOME').."/.config/t-ide/"..profile.."/"..profile..".lua")
+  session:close()
 end
