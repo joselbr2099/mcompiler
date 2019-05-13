@@ -36,7 +36,7 @@ VERSION = "1.0.1"
             default "no" 	
 ]]--
 
-  tide="no"
+  tide="yes"
 
 --[[-END CONFIG VARS-----------------------------------------------------------------]]--
 --[[-CONFIG OPTIONS------------------------------------------------------------------]]--
@@ -51,7 +51,6 @@ AddOption("debug", debug)
 MakeCommand("runc", "mcompiler.run_command", 0)
 MakeCommand("build", "mcompiler.build_command", 0)
 MakeCommand("debug", "mcompiler.debug_command", 0)
-MakeCommand("tree", "mcompiler.tree_command", 0)
 --bindkeys
 BindKey("F5", "mcompiler.run_command")
 BindKey("F6", "mcompiler.build_command")
@@ -77,7 +76,7 @@ end
 
 --function to open file manager
 function tree_command()
-        HandleCommand("tree")   
+  HandleCommand("tree")   
 end
 
 function command(arg)
@@ -110,18 +109,20 @@ function print_term(cmd,type)
    if(tide=="yes")
    then
 	   os.execute("tmux send-keys -t 2 'Escape'")
-	   os.execute("tmux run-shell -t 2 'echo ------------------Init-" .. type .. "------------------' ")
-	   os.execute("tmux run-shell -t 2 'echo COMMAND_USE: "..cmd.." "..file.."'")	   
+           os.execute("tmux run-shell -t 2 'echo COMMAND_USE: "..cmd.." "..file.."'")	   
+           os.execute("tmux run-shell -t 2 'echo ------------------Init-" .. type .. "------------------' ")
+	   	   
 	    for line in f:lines() do	    
 	      if line == " 0"
 	        then
-                     os.execute("tmux run-shell -t 2 'echo && echo ALL_OK_NO_ERRORS' ")
+		     os.execute("tmux run-shell -t 2 'echo && echo Info-----------------------------------------'")
+                     os.execute("tmux run-shell -t 2 'echo ALL_OK_NO_ERRORS' ")
                      os.execute("tmux run-shell -t 2 'echo EXEC_CODE: " .. line .. "' ")  --print in tmux pane 2
                 else
                      os.execute("tmux run-shell -t 2 'echo && echo " .. line .. "' ")  --print in tmux pane 2
 	      end
 	    end
-	   os.execute("tmux run-shell -t 2 'echo ------------------Finish-" .. type .. "----------------' ")
+	   os.execute("tmux run-shell -t 2 'echo && echo ------------------Finish-" .. type .. "----------------' ")
    else 
 	RunShellCommand("clear")
 	n = os.tmpname()
