@@ -4,7 +4,7 @@ VERSION = "1.0.1"
 
 --[[
 
-    "runn" this variable is responsible for running the program/script, you can use any interpreter/compiler etc
+    "runc" this variable is responsible for running the program/script, you can use any interpreter/compiler etc
     examples:
     runn = "go run"
     runn = "python"	
@@ -14,7 +14,7 @@ VERSION = "1.0.1"
 
 --[[
 
-    "comp" this variable is responsible for the flags or compilation arguments
+    "build" this variable is responsible for the flags or compilation arguments
     examples:
     comp = "go build -gcflags=-e"
 ]]--
@@ -22,12 +22,20 @@ VERSION = "1.0.1"
   build = ""
 
 --[[
-    "bug" use this variable for your favorite debugger
+    "debug" use this variable for your favorite debugger
     examples:
     comp = "gdb -d $(go env GOROOT) foo"
 ]]--
 
   debug =""
+
+--[[
+    "folder": "yes" to compile from the current folder instead of a file 
+              "no"  to compile from the current file   
+              default "no"
+]]--
+
+  folder ="no"
 
 --[[
 
@@ -36,7 +44,7 @@ VERSION = "1.0.1"
             default "no" 	
 ]]--
 
-  tide="yes"
+  tide="no"
 
 --[[-END CONFIG VARS-----------------------------------------------------------------]]--
 --[[-CONFIG OPTIONS------------------------------------------------------------------]]--
@@ -45,6 +53,7 @@ VERSION = "1.0.1"
 AddOption("runc", runc)
 AddOption("build", build)
 AddOption("debug", debug)
+AddOption("folder", folder)
 
 --[[-CONFIG OPTIONS------------------------------------------------------------------]]--
 --make commands
@@ -105,11 +114,18 @@ function print_term(cmd,type)
    local ft = CurView().Buf:FileType()   -- get file extension  
    local file = CurView().Buf.Path       -- get file name
    local dir = DirectoryName(file)       -- get directory of file
-   local f = io.popen("cd "..dir.." && "..cmd.." "..file..' 2>&1 && echo " $?"')  --execute cmd
+   if GetOption("folder") == "no"
+	then
+	     f = io.popen("cd "..dir.." && "..cmd.." "..file..' 2>&1 && echo " $?"')  --execute cmd
+	     opt=file	
+	else
+	     f = io.popen("cd "..dir.." && "..cmd.." "..dir..' 2>&1 && echo " $?"')  --execute cmd
+	     opt=dir
+   end
    if(tide=="yes")
    then
 	   os.execute("tmux send-keys -t 2 'Escape'")
-           os.execute("tmux run-shell -t 2 'echo COMMAND_USE: "..cmd.." "..file.."'")	   
+           os.execute("tmux run-shell -t 2 'echo COMMAND_USE: "..cmd.." "..opt.."'")	   
            os.execute("tmux run-shell -t 2 'echo ------------------Init-" .. type .. "------------------' ")
 	   	   
 	    for line in f:lines() do	    
@@ -119,7 +135,7 @@ function print_term(cmd,type)
                      os.execute("tmux run-shell -t 2 'echo ALL_OK_NO_ERRORS' ")
                      os.execute("tmux run-shell -t 2 'echo EXEC_CODE: " .. line .. "' ")  --print in tmux pane 2
                 else
-                     os.execute("tmux run-shell -t 2 'echo && echo " .. line .. "' ")  --print in tmux pane 2
+                     os.execute("tmux run-shell -t 2 '" .. line .. "' ")  --print in tmux pane 2
 	      end
 	    end
 	   os.execute("tmux run-shell -t 2 'echo && echo ------------------Finish-" .. type .. "----------------' ")
@@ -129,7 +145,7 @@ function print_term(cmd,type)
         file=io.open(n,"w")
         file:write("\n")
         file:write("------------------Init-" .. type .. "------------------ ","\n")
-        file:write("COMMAND_USE: " .. tostring(cmd) .. " " .. tostring(CurView().Buf.Path),"\n")
+        file:write("COMMAND_USE: " .. tostring(cmd) .. " " .. tostring(opt),"\n")
 	file:write("\n")	
         for line in f:lines() do
            if line == " 0"
