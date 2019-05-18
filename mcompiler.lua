@@ -114,32 +114,27 @@ function print_term(cmd,type)
    local ft = CurView().Buf:FileType()   -- get file extension  
    local file = CurView().Buf.Path       -- get file name
    local dir = DirectoryName(file)       -- get directory of file
-   if GetOption("folder") == "no"
-	then
-	     f = io.popen("cd "..dir.." && "..cmd.." "..file..' 2>&1 && echo " $?"')  --execute cmd
-	     opt=file	
-	else
-	     f = io.popen("cd "..dir.." && "..cmd.." "..dir..' 2>&1 && echo " $?"')  --execute cmd
-	     opt=dir
-   end
    if(tide=="yes")
-   then
-	   os.execute("tmux send-keys -t 2 'Escape'")
-           os.execute("tmux run-shell -t 2 'echo COMMAND_USE: "..cmd.." "..opt.."'")	   
-           os.execute("tmux run-shell -t 2 'echo ------------------Init-" .. type .. "------------------' ")
-	   	   
-	    for line in f:lines() do	    
-	      if line == " 0"
-	        then
-		     os.execute("tmux run-shell -t 2 'echo && echo Info-----------------------------------------'")
-                     os.execute("tmux run-shell -t 2 'echo ALL_OK_NO_ERRORS' ")
-                     os.execute("tmux run-shell -t 2 'echo EXEC_CODE: " .. line .. "' ")  --print in tmux pane 2
-                else
-                     os.execute("tmux run-shell -t 2 '" .. line .. "' ")  --print in tmux pane 2
-	      end
-	    end
-	   os.execute("tmux run-shell -t 2 'echo && echo ------------------Finish-" .. type .. "----------------' ")
+   then	
+ 	 if GetOption("folder") == "no"
+	     then
+	          opt=file
+	          running='"'.."cd "..dir.." && "..cmd.." "..file..' 2>&1'..'"'	
+	     else
+	          opt=dir
+	          running='"'.."cd "..dir.." && "..cmd.." "..dir..' 2>&1'..'"'
+   	 end
+         os.execute("tmux send-keys -t 2 'SES=$(tmux display-message -p "..'"'.."#S"..'"'..")' ENTER")
+	 os.execute("tmux send-keys -t 2 'sh ~/.config/t-ide/$SES/building "..("%q"):format(cmd).." "..("%q"):format(opt).." "..("%q"):format(type).." "..running.."' ENTER")  
    else 
+	if GetOption("folder") == "no"
+	    then
+	         f = io.popen("cd "..dir.." && "..cmd.." "..file..' 2>&1 && echo " $?"')  --execute cmd
+	         opt=file	
+	    else
+	         f = io.popen("cd "..dir.." && "..cmd.." "..dir..' 2>&1 && echo " $?"')  --execute cmd
+	         opt=dir
+        end
 	RunShellCommand("clear")
 	n = os.tmpname()
         file=io.open(n,"w")
@@ -160,9 +155,10 @@ function print_term(cmd,type)
         file:write("------------------Finish-" .. type .. "---------------- ","\n")
 	file:close()
 	RunInteractiveShell("cat "..n.."",true,true)
-        os.remove(n)     
+        os.remove(n)
+        f:close()     
    end	          
-   f:close()
+
    --os.execute("tmux send-keys -t 2 'PageDown'")   
 end
 function help(cmd)
