@@ -125,7 +125,7 @@ function print_term(cmd,type)
 	          running='"'.."cd "..dir.." && "..cmd.." "..dir..' 2>&1'..'"'
    	 end
          os.execute("tmux send-keys -t 2 'SES=$(tmux display-message -p "..'"'.."#S"..'"'..")' ENTER")
-	 os.execute("tmux send-keys -t 2 'sh ~/.config/t-ide/$SES/building "..("%q"):format(cmd).." "..("%q"):format(opt).." "..("%q"):format(type).." "..running.."' ENTER")  
+	 os.execute("tmux send-keys -t 2 'sh ~/.config/t-ide/$SES/builder "..("%q"):format(cmd).." "..("%q"):format(opt).." "..("%q"):format(type).." "..running.."' ENTER")  
    else 
 	if GetOption("folder") == "no"
 	    then
