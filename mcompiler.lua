@@ -4,10 +4,14 @@ VERSION = "1.0.1"
 
 --[[
 
-    "runc" this variable is responsible for running the program/script, you can use any interpreter/compiler etc
-    examples:
-    runn = "go run"
-    runn = "python"	
+    "runc" this variable is responsible for running the program/script, you can use any interpreter/compilec, the file name
+    is added automatically examples:
+    runc = "go run"
+    runc = "python"
+
+    if you need to specify the file name in a fixed position use #FILE, examples:
+    runc = "nasm -felf64 #FILE && ld hello.o && ./a.out"
+	 
 ]]--
   -- compiler/interpreter params, change this for custom param
   runc = ""
@@ -44,7 +48,7 @@ VERSION = "1.0.1"
             default "no" 	
 ]]--
 
-  tide="no"
+  tide="yes"
 
 --[[-END CONFIG VARS-----------------------------------------------------------------]]--
 --[[-CONFIG OPTIONS------------------------------------------------------------------]]--
@@ -114,12 +118,20 @@ function print_term(cmd,type)
    local ft = CurView().Buf:FileType()   -- get file extension  
    local file = CurView().Buf.Path       -- get file name
    local dir = DirectoryName(file)       -- get directory of file
+
+   --add file name in command position or a end of coomand
+   if string.match(cmd, "#FILE") then
+  	cmd = cmd:gsub("#FILE", file)
+     else
+  	cmd = cmd.." "..file
+   end
+
    if(tide=="yes")
    then	
  	 if GetOption("folder") == "no"
 	     then
 	          opt=file
-	          running='"'.."cd "..dir.." && "..cmd.." "..file..' 2>&1'..'"'	
+	          running='"'.."cd "..dir.." && "..cmd..' 2>&1'..'"'	
 	     else
 	          opt=dir
 	          running='"'.."cd "..dir.." && "..cmd.." "..dir..' 2>&1'..'"'
@@ -129,7 +141,7 @@ function print_term(cmd,type)
    else 
 	if GetOption("folder") == "no"
 	    then
-	         f = io.popen("cd "..dir.." && "..cmd.." "..file..' 2>&1 && echo " $?"')  --execute cmd
+	         f = io.popen("cd "..dir.." && "..cmd..' 2>&1 && echo " $?"')  --execute cmd
 	         opt=file	
 	    else
 	         f = io.popen("cd "..dir.." && "..cmd.." "..dir..' 2>&1 && echo " $?"')  --execute cmd

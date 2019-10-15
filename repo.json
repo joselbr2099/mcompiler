@@ -1,16 +1,12 @@
-[
-	{
-		"Name": "mcompiler",
-		"Description": "Simple plugin to compile code using micro text editor",
-		"Tags": ["mcompiler"],
-		"Versions": [
-			{
-				"Version": "1.0.1",
-				"Url": "https://github.com/Odyssey2247/mcompiler/archive/1.0.1.zip",
-				"Require": {
-					"micro": ">=1.1.2"
-				}
-			}
-		]
-	}
-]
+[{
+	"Name": "mcompiler",
+	"Description": "Simple plugin to compile code using micro text editor",
+	"Tags": ["mcompiler"],
+	"Versions": [{
+		"Version": "1.0.1",
+		"Url": "https://github.com/Odyssey2247/mcompiler/archive/1.0.1.zip",
+		"Require": {
+			"micro": ">=1.1.2"
+		}
+	}]
+}]
