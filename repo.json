@@ -4,7 +4,7 @@
 	"Tags": ["mcompiler"],
 	"Versions": [{
 		"Version": "1.0.1",
-		"Url": "https://github.com/Odyssey2247/mcompiler/archive/1.0.1.zip",
+		"Url": "https://github.com/joselbr2099/mcompiler/archive/1.0.1.zip",
 		"Require": {
 			"micro": ">=1.1.2"
 		}
