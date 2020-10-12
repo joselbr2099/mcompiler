@@ -43,7 +43,7 @@ VERSION = "1.0.1"
 
 --[[
 
-    "tide": "yes" if yo use Tmux based Ide (https://github.com/Odyssey2247/t-ide) 
+    "tide": "yes" if yo use Tmux based Ide (https://github.com/joselbr2099/t-ide) 
             "no" for execution/compilation in background (no tide) use only micro
             default "no" 	
 ]]--
@@ -183,12 +183,12 @@ if tide=="yes"
        os.execute("tmux run-shell -t 2 'echo or view README from tide'")
        os.execute("tmux run-shell -t 2 'echo '")
        os.execute("tmux run-shell -t 2 'echo mcompiler v1.0.1'")
-       os.execute("tmux run-shell -t 2 'echo https://github.com/Odyssey2247/mcompiler'")
+       os.execute("tmux run-shell -t 2 'echo https://github.com/joselbr2099/mcompiler'")
        os.execute("tmux run-shell -t 2 'echo ------------------Error-" .. cmd .. "------------------' ")		
    else
        RunInteractiveShell("clear",false,false)
        hlp="echo -e 'Mcompiler v1.0.1\n".. 
-           "https://github.com/Odyssey2247/mcompiler\n"..
+           "https://github.com/joselbr2099/mcompiler\n"..
            "\n"..
            "Error the variable -"..cmd.."- is not set\n"..
            " Please use te following commands to set your variables:\n"..
