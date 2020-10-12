@@ -10,7 +10,7 @@
 
 ### NOTE
 
-this plugin is made for Tmux based IDE (t-ide) https://github.com/Odyssey2247/t-ide
+this plugin is made for Tmux based IDE (t-ide) https://github.com/joselbr2099/t-ide
 but can be using without t-ide with the correct settings
 
 ### INSTALL
@@ -23,7 +23,7 @@ in micro open command mode (remember this: ctrl+e ) and:
 
 in terminal
 
-    $ git clone https://github.com/Odyssey2247/mcompiler
+    $ git clone https://github.com/joselbr2099/mcompiler
     $ mv mcompiler ~/.config/micro/plugins
 
 ### USE
