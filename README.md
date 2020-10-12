@@ -4,7 +4,7 @@
     / /\/\ \ (_| (_) | | | | | | |_) | | |  __/ |
     \/    \/\___\___/|_| |_| |_| .__/|_|_|\___|_|
                                |_|                  
-    https://github.com/Odyssey2247/mcompiler
+    https://github.com/joselbr2099/mcompiler
 
 # Simple plugin to compile code using micro text editor V 1.0.1
 
